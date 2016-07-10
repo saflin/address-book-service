@@ -27,4 +27,14 @@ public class GumtreeAddressBookService implements AddressBookService {
 
     }
 
+    @Override
+    public String findOldestPerson() {
+        Person person = addressRecordProvider.provideAddressRecords()
+                .stream()
+                .map(addressRecord -> addressRecord.getPerson()).
+                        reduce((person1, person2) -> person1.getDateOfBirth().isBefore(person2.getDateOfBirth()) ? person1 : person2).
+                        orElse(null);
+        return person != null ? person.getName() : null;
+    }
+
 }

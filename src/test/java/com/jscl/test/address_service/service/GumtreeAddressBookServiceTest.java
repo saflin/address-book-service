@@ -51,7 +51,27 @@ public class GumtreeAddressBookServiceTest {
 
     }
 
+    @Test
+    public void itShouldFindOldestPerson(){
 
+        when(addressRecordProvider.provideAddressRecords()).thenReturn(getTestAddressRecords());
+        GumtreeAddressBookService gumtreeAddressBookService = new GumtreeAddressBookService(addressRecordProvider);
+        assertEquals("Carole",gumtreeAddressBookService.findOldestPerson());
+
+        when(addressRecordProvider.provideAddressRecords()).thenReturn(getTestAddressRecordsAllMale());
+        gumtreeAddressBookService = new GumtreeAddressBookService(addressRecordProvider);
+        assertEquals("John Peter",gumtreeAddressBookService.findOldestPerson());
+
+        when(addressRecordProvider.provideAddressRecords()).thenReturn(getTestAddressRecordsAllFemale());
+        gumtreeAddressBookService = new GumtreeAddressBookService(addressRecordProvider);
+        assertEquals("Sarah Stone",gumtreeAddressBookService.findOldestPerson());
+
+
+        when(addressRecordProvider.provideAddressRecords()).thenReturn(new HashSet<AddressRecord>());
+        gumtreeAddressBookService = new GumtreeAddressBookService(addressRecordProvider);
+        assertNull(gumtreeAddressBookService.findOldestPerson());
+
+    }
 
     private Set<AddressRecord> getTestAddressRecords(){
         Set<AddressRecord> testRecords = new HashSet<>();

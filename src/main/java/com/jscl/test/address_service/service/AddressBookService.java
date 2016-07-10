@@ -7,4 +7,5 @@ import com.jscl.test.address_service.model.Gender;
  */
 public interface AddressBookService {
     long getAddressRecordCountByGender(Gender gender);
+    String findOldestPerson();
 }
