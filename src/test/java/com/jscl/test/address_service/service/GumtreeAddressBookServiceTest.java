@@ -73,6 +73,43 @@ public class GumtreeAddressBookServiceTest {
 
     }
 
+
+    @Test
+    public void itShouldFindAgeDifference(){
+
+        when(addressRecordProvider.provideAddressRecords()).thenReturn(getTestAddressRecords());
+        GumtreeAddressBookService gumtreeAddressBookService = new GumtreeAddressBookService(addressRecordProvider);
+
+        assertEquals(0,gumtreeAddressBookService.findAgeDifferenceBetweenPerson("John Peter","John Peter"));
+
+        assertEquals(2862,gumtreeAddressBookService.findAgeDifferenceBetweenPerson("John Peter","Fernando Louise"));
+
+        assertEquals(-2862,gumtreeAddressBookService.findAgeDifferenceBetweenPerson("Fernando Louise", "John Peter"));
+
+    }
+
+    @Test
+    public void itShouldThrowExceptionIfItCantAddressRecords(){
+        try{
+            when(addressRecordProvider.provideAddressRecords()).thenReturn(getTestAddressRecords());
+            GumtreeAddressBookService gumtreeAddressBookService = new GumtreeAddressBookService(addressRecordProvider);
+            gumtreeAddressBookService.findAgeDifferenceBetweenPerson("A","B");
+            fail("expecting illegal argument exception");
+        }catch (IllegalArgumentException ex){
+            assertEquals("Unable to find address record with name : A",ex.getMessage());
+        }
+
+
+        try{
+            when(addressRecordProvider.provideAddressRecords()).thenReturn(getTestAddressRecords());
+            GumtreeAddressBookService gumtreeAddressBookService = new GumtreeAddressBookService(addressRecordProvider);
+            gumtreeAddressBookService.findAgeDifferenceBetweenPerson("John Peter","B");
+            fail("expecting illegal argument exception");
+        }catch (IllegalArgumentException ex){
+            assertEquals("Unable to find address record with name : B",ex.getMessage());
+        }
+    }
+
     private Set<AddressRecord> getTestAddressRecords(){
         Set<AddressRecord> testRecords = new HashSet<>();
         testRecords.add(createRecord("John Peter", "Male", "16/03/77"));

@@ -8,4 +8,5 @@ import com.jscl.test.address_service.model.Gender;
 public interface AddressBookService {
     long getAddressRecordCountByGender(Gender gender);
     String findOldestPerson();
+    int findAgeDifferenceBetweenPerson(final String firtPersonName,final String secondPersonName);
 }
